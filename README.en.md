@@ -12,7 +12,7 @@ Version 0.7.1 is a preview release validated on Windows x64. See [release notes]
 
 **[Download the Windows one-click installer](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.1/install-cevris-plot.cmd)** · [Portable ZIP](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.1/cevris-plot.zip) · [Release](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.7.1)
 
-Double-click the installer to verify and unpack the release, install dependencies, create a current-user Start Menu shortcut and open the editor. It installs under `%LOCALAPPDATA%\CevrisPlot\0.7.1`; afterwards search **Cevris Plot** in Start. First installation requires internet access, without administrator privileges. Use the ZIP option below to choose a different directory.
+Double-click the installer to verify and unpack the release, install dependencies, create a current-user Start Menu shortcut and open the editor. It installs under `%LOCALAPPDATA%\CevrisPlot\0.7.1`; afterwards search **Cevris Plot** in Start. First installation requires internet access and 2 GB of free disk space, without administrator privileges. Use the ZIP option below if your system drive is low on space or to choose a different directory.
 
 On Windows x64, extract the release ZIP and double-click `first-install.cmd`. It downloads Node.js, R and packages, builds and checks the app, then opens the editor automatically. Later, use `start.cmd` to open <http://127.0.0.1:47831/>. Afterwards manual data import, editing, project saving and export work offline. The local server must be running; a URL alone cannot start it. Other operating systems have not been validated.
 

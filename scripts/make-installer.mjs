@@ -12,7 +12,9 @@ const archive = await fs.readFile(path.join(root, "dist", "cevris-plot.zip"));
 const checksum = createHash("sha256").update(archive).digest("hex");
 const download = await fs.readFile(path.join(root, "scripts", "download.ps1"), "utf8");
 const script = `@echo off
+setlocal
 set "CEVRIS_INSTALLER=%~f0"
+set "CEVRIS_INSTALL_DIR=%~1"
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$text=[IO.File]::ReadAllText($env:CEVRIS_INSTALLER); & ([scriptblock]::Create($text.Substring($text.LastIndexOf('# CEVRIS-POWERSHELL'))))"
 if errorlevel 1 pause
 exit /b
@@ -20,9 +22,11 @@ exit /b
 $ErrorActionPreference = 'Stop'
 if (![Environment]::Is64BitOperatingSystem) { throw 'Cevris Plot requires Windows x64.' }
 ${download}
-$destination = Join-Path $env:LOCALAPPDATA 'CevrisPlot/${PRODUCT.version}'
+$destination = if ($env:CEVRIS_INSTALL_DIR) { [IO.Path]::GetFullPath($env:CEVRIS_INSTALL_DIR) } else { Join-Path $env:LOCALAPPDATA 'CevrisPlot/${PRODUCT.version}' }
 $application = Join-Path $destination 'cevris-plot'
 $installScript = Join-Path $application 'scripts/install.ps1'
+$drive = New-Object System.IO.DriveInfo([IO.Path]::GetPathRoot($destination))
+if ($drive.AvailableFreeSpace -lt 2GB) { throw 'Please allow 2 GB of free disk space, or download the portable ZIP and extract it to another drive.' }
 if (!(Test-Path -LiteralPath $installScript)) {
     Write-Output 'Downloading Cevris Plot ${PRODUCT.version}...'
     $temporaryZip = Join-Path ([IO.Path]::GetTempPath()) ('cevris-' + [guid]::NewGuid().ToString('N') + '.zip')

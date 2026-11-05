@@ -18,7 +18,7 @@
 
 **[下载 Windows 一键安装器](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.1/install-cevris-plot.cmd)** · [下载便携安装包](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.1/cevris-plot.zip) · [发布页](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.7.1)
 
-一键安装器下载后双击即可：校验发布包、自动安装运行环境、创建当前用户的开始菜单入口并打开网页。默认安装到 `%LOCALAPPDATA%\CevrisPlot\0.7.1`，以后可在开始菜单搜索 **Cevris Plot**。首次安装需要联网；不需要管理员权限。若希望自行指定目录，使用下面的 ZIP 方式。
+一键安装器下载后双击即可：校验发布包、自动安装运行环境、创建当前用户的开始菜单入口并打开网页。默认安装到 `%LOCALAPPDATA%\CevrisPlot\0.7.1`，以后可在开始菜单搜索 **Cevris Plot**。首次安装需要联网，并预留 2 GB 磁盘空间；不需要管理员权限。若系统盘空间不足或希望自行指定目录，使用下面的 ZIP 方式。
 
 Windows x64：下载发布包并解压，双击“首次安装.cmd”，自动下载和安装 Node.js、R 与依赖，构建、检查图形并打开网页。以后双击“启动科研绘图.cmd”即可访问 http://127.0.0.1:47831。无需编写代码，也无需模型 Token。
 
