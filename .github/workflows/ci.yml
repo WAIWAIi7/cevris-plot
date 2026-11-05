@@ -50,6 +50,7 @@ jobs:
       - run: node scripts/verify-r-source.mjs
       - run: npm run check:release
       - run: node scripts/package.mjs
+      - run: node scripts/package-doubao.mjs
   portable-installer:
     runs-on: windows-latest
     timeout-minutes: 30

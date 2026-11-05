@@ -1,6 +1,7 @@
 param(
     [string]$InstallDir, [string]$ArchivePath, [string]$NodeArchive,
-    [string]$RInstaller, [string]$ExtractorArchive, [string]$Rscript, [string]$RLibrary,
+    [string]$RInstaller, [string]$ExtractorArchive,
+    [string]$Rscript = $env:FIGURE_RSCRIPT, [string]$RLibrary = $env:FIGURE_R_LIBS,
     [switch]$Offline, [switch]$NoLaunch, [switch]$CreateShortcut
 )
 $ErrorActionPreference = 'Stop'

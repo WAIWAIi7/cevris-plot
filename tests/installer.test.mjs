@@ -82,3 +82,26 @@ test('an agent-bundled Node without npm is not selected as a complete installati
     assert.match(stdout, /fallback-required/);
   } finally { await fs.rm(root, {recursive:true,force:true}); }
 });
+
+test('standalone bootstrap forwards external R from the environment and respects explicit overrides', {skip:!windows}, async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'cevris-bootstrap-'));
+  try {
+    const app = path.join(root, 'cevris-plot');
+    await fs.mkdir(path.join(app, 'scripts'), {recursive:true});
+    await fs.writeFile(path.join(app, 'package.json'), JSON.stringify({version:'test'}));
+    // Observe the installer's inputs without downloading a runtime or launching R.
+    await fs.writeFile(path.join(app, 'scripts/install.ps1'), `param([switch]$Launch,[string]$NodeArchive,[string]$RInstaller,[string]$ExtractorArchive,[string]$Rscript,[string]$RLibrary,[switch]$Offline,[switch]$CreateShortcut)\n@{rscript=$Rscript;library=$RLibrary} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $PSScriptRoot '../received.json') -Encoding UTF8\n`);
+    const template = await fs.readFile(new URL('../scripts/bootstrap.ps1', import.meta.url), 'utf8');
+    const source = template.replace('# RELEASE_CONSTANTS', "$releaseVersion = 'test'\n$downloadSource = ''\n$extractSource = ''")
+      .replace('# DOWNLOAD_FUNCTIONS', `function Get-DownloadNode { return ${psQuote(process.execPath)} }`);
+    const entry = path.join(root, 'bootstrap.ps1'); await fs.writeFile(entry, '\uFEFF'+source);
+    const fromEnv = {FIGURE_RSCRIPT:path.join(root,'External R','Rscript.exe'), FIGURE_R_LIBS:path.join(root,'External R Library')};
+    const execute = extra => promisify(execFile)(powershell,['-NoProfile','-ExecutionPolicy','Bypass','-File',entry,'-InstallDir',root,'-NoLaunch',...extra], {env:{...process.env,...fromEnv},windowsHide:true,timeout:30000});
+    const received = async () => JSON.parse((await fs.readFile(path.join(app,'received.json'),'utf8')).replace(/^\uFEFF/,''));
+    await execute([]);
+    assert.deepEqual(await received(), {rscript:fromEnv.FIGURE_RSCRIPT,library:fromEnv.FIGURE_R_LIBS});
+    const explicit = {rscript:path.join(root,'Chosen R','Rscript.exe'),library:path.join(root,'Chosen R Library')};
+    await execute(['-Rscript',explicit.rscript,'-RLibrary',explicit.library]);
+    assert.deepEqual(await received(), explicit);
+  } finally { await fs.rm(root,{recursive:true,force:true}); }
+});

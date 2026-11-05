@@ -1,3 +1,9 @@
+# Cevris Plot 0.8.2 — bootstrap environment forwarding
+
+- The standalone CMD/PowerShell entrypoints now forward FIGURE_RSCRIPT and FIGURE_R_LIBS when explicit R parameters are omitted. Explicit parameters continue to take precedence.
+- Regression coverage executes the real bootstrap flow with both environment-only and explicit R configuration.
+- Add a double-click DeepSeek Harness registration entrypoint and a dedicated Doubao desktop resource ZIP with documented size limits, host-specific instructions and store-review boundaries.
+
 # Cevris Plot 0.8.1 — first-launch fixes
 
 - When an agent supplies a standalone Node executable without npm, retain it for HTTPS downloads and install a complete app-local Node runtime automatically.

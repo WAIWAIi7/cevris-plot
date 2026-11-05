@@ -1,8 +1,8 @@
 {
-  "version": "0.8.1",
+  "version": "0.8.2",
   "file": "cevris-plot-frontend.zip",
-  "sha256": "2df0e39ece460e4c12cbda66b2bcb80ee20a69886f19b5da56643e91f72d6eb7",
+  "sha256": "0ac914b9532f6af3094260aded676d672a5fd697567c30af46e43e22dd716858",
   "urls": [
-    "https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.1/cevris-plot-frontend.zip"
+    "https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.2/cevris-plot-frontend.zip"
   ]
 }
