@@ -1,0 +1,52 @@
+name: Cevris Plot checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: node --test tests/import.test.mjs tests/data.test.mjs tests/client.test.mjs
+      - run: npm run check:release
+      - run: node scripts/package.mjs --source
+      - run: npm audit --omit=dev --audit-level=high
+  windows-r:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: release
+      - run: npm ci
+      - name: Install R packages and select interpreter
+        shell: pwsh
+        run: |
+          Rscript --vanilla scripts/setup-r.R
+          if ($LASTEXITCODE -ne 0) { throw 'R setup failed' }
+          "FIGURE_RSCRIPT=$((Get-Command Rscript).Source)" >> $env:GITHUB_ENV
+      - run: npm run build
+      - run: npm test
+      - run: npm run verify:r
+      - run: node scripts/verify-r-source.mjs
+      - run: npm run check:release
+      - run: node scripts/package.mjs

@@ -1,0 +1,46 @@
+{
+  "name": "cevris-plot",
+  "version": "0.7.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "node server/index.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "verify:r": "node scripts/verify-r.mjs",
+    "cli": "node scripts/figure.mjs",
+    "check:release": "node scripts/check-release.mjs"
+  },
+  "dependencies": {
+    "csv-parse": "7.0.3",
+    "exceljs": "^4.4.0",
+    "fflate": "^0.8.2",
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "prettier": "3.6.2",
+    "saxes": "5.0.1"
+  },
+  "overrides": {
+    "exceljs": {
+      "uuid": "11.1.1"
+    }
+  },
+  "description": "An R-first, local scientific plotting workbench and agent skill.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WAIWAIi7/cevris-plot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WAIWAIi7/cevris-plot/issues"
+  },
+  "homepage": "https://github.com/WAIWAIi7/cevris-plot"
+}

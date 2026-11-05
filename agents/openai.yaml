@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cevris Plot"
+  short_description: "零代码科研绘图：选图、真实 R 渲染、网页微调、组图与可复现导出"
+  default_prompt: "使用 $cevris-plot，根据我的实验背景和数据选择合适图形，生成图片并交到本地网页继续调整。"
