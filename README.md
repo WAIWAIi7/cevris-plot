@@ -8,27 +8,23 @@
 
 ![Cevris Plot 推荐主页](docs/images/home.png)
 
-当前为 0.7.2 预览版，已验证平台为 Windows x64。已知限制和依赖告警见 [发布说明](RELEASE_NOTES.md)。
+当前为 0.8.0 预览版，已验证平台为 Windows x64。已知限制和依赖告警见 [发布说明](RELEASE_NOTES.md)。
 
-[查看发布前检查结果](docs/RELEASE_CHECKS.md)
+[查看 0.8.0 安装修复验收](docs/RELEASE_CHECKS_080.md)
 
 配色用法、完整名单和边界见 [PALETTES.md](PALETTES.md)。
 
 ## 运行
 
-**[下载 Windows 一键安装器](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.2/install-cevris-plot.cmd)** · [下载便携安装包](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.2/cevris-plot.zip) · [发布页](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.7.2)
+**[Windows 一键安装器](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.0/install-cevris-plot.cmd)** · [发布 ZIP](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.0/cevris-plot.zip) · [发布页](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.8.0)
 
-一键安装器下载后双击即可：校验发布包、自动安装运行环境、创建当前用户的开始菜单入口并打开网页。默认安装到 `%LOCALAPPDATA%\CevrisPlot\0.7.2`，以后可在开始菜单搜索 **Cevris Plot**。首次安装需要联网，并预留 2 GB 磁盘空间；不需要管理员权限。若系统盘空间不足或希望自行指定目录，使用下面的 ZIP 方式。
+双击安装器可选择任意可写目录；或下载 ZIP，解压到目标磁盘，双击“首次安装.cmd”。发布包自带编译网页。安装后双击“启动科研绘图.cmd”或 start.cmd，即可打开本地网页。首次准备依赖需要联网，之后手动绘图、编辑和导出可以离线使用。
 
-Windows x64：下载发布包并解压，双击“首次安装.cmd”，自动下载和安装 Node.js、R 与依赖，构建、检查图形并打开网页。以后双击“启动科研绘图.cmd”即可访问 http://127.0.0.1:47831。无需编写代码，也无需模型 Token。
+**0.8.0 改为文件部署**：官方 R 安装文件只解包、不执行，不依赖注册表或开始菜单权限；优先使用 Node/OpenSSL 下载，支持预置文件、已有 Node/R、安装日志和失败后重试。固定 2 GB 门槛已取消，改为根据缺少组件提示空间预算。开始菜单入口是可选项，默认无需创建。
 
-默认手动启动：启动文件会先启动本地服务，再打开网页。需要自动启动时，双击“启用登录自启动.cmd”；取消时双击“关闭登录自启动.cmd”。此设置仅创建当前用户Startup文件夹中的Cevris Plot.lnk，不需要管理员权限。移动项目文件夹后需从新位置重新启用。
+受限环境、无窗口安装、离线准备、指定目录和磁盘占用说明见 [安装与修复指南](docs/INSTALLATION.md)。DSH 注册与豆包本地宿主接入见 [智能体宿主指南](docs/AGENT_HOSTS.md)。具体客户端需要具备本地文件和进程工具；不声称普通聊天网页可以直接安装本机软件。
 
-如果出现“127.0.0.1 拒绝连接”，通常是本地服务还没有启动，单独刷新网址不能启动它。请重新双击上述启动文件；启动失败时查看 `.data/launcher.log` 与 `.data/server-error.log`。启动器会等待服务就绪，连续双击复用同一服务；遇到其他应用占用端口会给出错误，不结束对方进程。网页运行中断连会保留草稿、显示启动说明，并支持重新连接和下载项目备份。
-
-新电脑首次双击“首次安装.cmd”。安装器从 Node.js 官方网站、CRAN 与 npm 获取运行环境和依赖，放在本目录内。已完成安装后，手动导入、选图、编辑、项目保存和导出不需要互联网或 AI Token。此版本安装器面向 Windows x64；其他平台尚未验收。
-
-软件表现为“本机服务 + 浏览器页面”：不是云端网站，不需要账号。关闭页面后服务继续运行；重启会结束服务，已启用自启动则下次登录后重新启动，否则需手动双击启动。数据存放于 .data，网页草稿存于浏览器 IndexedDB。服务只监听本机地址。迁移时保存 .figure.json 或完整复现包，不要只保存截图。
+网页采用“本机服务 + 浏览器”，数据在本地 .data，草稿保存在当前浏览器。网址本身不能启动服务；遇到拒绝连接请运行启动文件，并查看 .data/launcher.log、.data/server-error.log。安装日志为 .data/install.log。默认只手动启动；需要登录自启动时再使用相应脚本。移动应用或换电脑时，外部运行库路径和自启动入口需要重新指定；项目迁移使用 .figure.json / .composition.json 或复现包。
 
 ## 已实现
 
@@ -84,7 +80,7 @@ SVG 采用可编辑文本，查看电脑需有相应字体；PDF 由 Cairo 生�
 
 ## 后续范围
 
-当前版本为 0.7.2，尚未实现数百图形、任意位置自由拖拽拼版、网页内模型对话、完整统计分析流水线或跨平台安装。后续按“配方 + 输入契约 + 示例 + 专用控件 + 导出验证”扩展。优先扩展 R 包；仅在 R 方案不能满足需求时增加其他引擎。
+当前版本为 0.8.0，尚未实现数百图形、任意位置自由拖拽拼版、网页内模型对话、完整统计分析流水线或跨平台安装。后续按“配方 + 输入契约 + 示例 + 专用控件 + 导出验证”扩展。优先扩展 R 包；仅在 R 方案不能满足需求时增加其他引擎。
 
 ## GitHub 源码发布
 

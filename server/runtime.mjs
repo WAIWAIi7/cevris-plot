@@ -12,8 +12,13 @@ export const ROOT = path.resolve(
 export const DATA = path.resolve(
   process.env.FIGURE_DATA_DIR || path.join(ROOT, ".data"),
 );
+const runtimeConfig = await fs.readFile(path.join(ROOT, '.runtime', 'runtime.json'), 'utf8')
+  .then(text => JSON.parse(text.replace(/^\uFEFF/, '')))
+  .catch(error => { if (error.code === 'ENOENT') return {}; throw error; });
+export const R_LIBRARIES = [path.join(ROOT, '.runtime', 'library'), process.env.FIGURE_R_LIBS || runtimeConfig.rLibrary].filter(Boolean).join(path.delimiter);
 const configuredR =
   process.env.FIGURE_RSCRIPT ||
+  (runtimeConfig.rscript ? path.resolve(ROOT, runtimeConfig.rscript) : '') ||
   path.join(
     ROOT,
     ".runtime",
@@ -81,7 +86,7 @@ const rPool = createRPool({
     ...process.env,
     LC_ALL: "",
     LANG: "",
-    R_LIBS_USER: path.join(ROOT, ".runtime", "library"),
+    R_LIBS_USER: R_LIBRARIES,
   },
 });
 export const closeRWorkers = () => rPool.close();
@@ -97,7 +102,7 @@ export function runR(args, timeout = 90000) {
         ...process.env,
         LC_ALL: "",
         LANG: "",
-        R_LIBS_USER: path.join(ROOT, ".runtime", "library"),
+        R_LIBS_USER: R_LIBRARIES,
       },
     });
     let stdout = "",

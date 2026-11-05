@@ -2,6 +2,8 @@
 
 Cevris Plot's own code is licensed under MIT. Dependency and runtime licenses are separate; installing a dependency does not change its license.
 
+The Windows installer downloads checksum-pinned innoextract 1.9 from its maintainer to unpack R without executing Inno Setup. Its MIT license and bundled Boost/liblzma/libstdc++ notices are included in the upstream archive. The extractor is not bundled in Cevris Plot release archives; its source and license are at https://github.com/dscharrer/innoextract. R's original COPYING and other notices remain in the extracted R tree.
+
 The JavaScript lockfile records exact installed package versions, integrity hashes and licenses. Direct components include React (MIT), Lucide (ISC), Zod (MIT), ExcelJS (MIT), csv-parse (MIT), fflate (MIT), esbuild (MIT), Prettier (MIT), and saxes (ISC). Transitive packages retain their own notices in their npm distributions. Cevris Plot does not relicense them.
 
 The application uses R and R packages including ggplot2, jsonlite, svglite, systemfonts, ragg, MASS, survival and hexbin. R is GPL licensed; package-specific licenses and versions can be queried with `packageDescription()` / `packageVersion()`. R and these packages are downloaded from official distribution sources at installation time, and are not included in the source or Skill archives. Node.js is likewise downloaded with its original license and notices.

@@ -1,0 +1,17 @@
+{
+  "node": {
+    "version": "24.22.2", "file": "node-v24.22.2-win-x64.zip",
+    "sha256": "ca1bff5d8ead13c9f2ea404a176db46bd430704d5b5113734049fa365e7799e2",
+    "urls": ["https://nodejs.org/dist/v24.22.2/node-v24.22.2-win-x64.zip"]
+  },
+  "r": {
+    "version": "4.6.2", "file": "R-4.6.2-win.exe",
+    "sha256": "b0b0053baa1963b6d8a28c9642d50107ef9ce2f41c8b9a90e952846c8918b38a",
+    "urls": ["https://cloud.r-project.org/bin/windows/base/R-4.6.2-win.exe", "https://cran.r-project.org/bin/windows/base/R-4.6.2-win.exe", "https://cran.rstudio.com/bin/windows/base/R-4.6.2-win.exe", "https://cran.r-project.org/bin/windows/base/old/4.6.2/R-4.6.2-win.exe"]
+  },
+  "extractor": {
+    "version": "1.9", "file": "innoextract-1.9-windows.zip",
+    "sha256": "6989342c9b026a00a72a38f23b62a8e6a22cc5de69805cf47d68ac2fec993065",
+    "urls": ["https://constexpr.org/innoextract/files/innoextract-1.9-windows.zip", "https://github.com/dscharrer/innoextract/releases/download/1.9/innoextract-1.9-windows.zip"]
+  }
+}

@@ -9,6 +9,8 @@ description: 根据实验背景选择科研图表、检查数据并使用 R 直�
 
 ## 使用入口
 
+安装与受限 Windows 环境先读 [安装说明](docs/INSTALLATION.md)：复用 `FIGURE_RSCRIPT` / `FIGURE_NODE`，或提供 `-NodeArchive` / `-RInstaller` / `-ExtractorArchive`。R EXE 只解包，不运行安装器；不改注册表、ACL 或证书设置。发布包无需重建网页，安装失败日志位于 `.data/install.log`。DSH 注册与豆包本地宿主接入见 [宿主说明](docs/AGENT_HOSTS.md)，不要把通用 CLI 验证说成客户端端到端认证。
+
 所有命令从此目录运行。Windows 优先使用 .runtime/node/node.exe，也可使用已安装的 node。智能体首次缺少环境时执行 `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/install.ps1`，无需打开屏幕；手动使用者双击 first-install.cmd 自动安装并打开网页，以后用 start.cmd。首次安装联网下载官方运行库，安装后绘图、编辑和导出只访问本机。
 
     node scripts/figure.mjs doctor

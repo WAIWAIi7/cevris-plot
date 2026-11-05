@@ -19,7 +19,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - run: node --test tests/import.test.mjs tests/data.test.mjs tests/client.test.mjs
+      - run: node --test tests/import.test.mjs tests/data.test.mjs tests/client.test.mjs tests/installer.test.mjs tests/archive.test.mjs tests/host-registration.test.mjs
       - run: npm run check:release
       - run: node scripts/package.mjs --source
       - run: npm audit --omit=dev --audit-level=high
@@ -50,3 +50,30 @@ jobs:
       - run: node scripts/verify-r-source.mjs
       - run: npm run check:release
       - run: node scripts/package.mjs
+  portable-installer:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - name: Install R by file extraction and verify offline repeat
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $before = @(Get-ChildItem 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall' -ErrorAction SilentlyContinue | Where-Object PSChildName -Like 'R for Windows*' | Sort-Object PSChildName | ForEach-Object { Get-ItemProperty $_.PSPath | Select-Object * -ExcludeProperty PS* } | ConvertTo-Json -Depth 4)
+          & ./scripts/install.ps1
+          & ./scripts/install.ps1 -Offline
+          $after = @(Get-ChildItem 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall' -ErrorAction SilentlyContinue | Where-Object PSChildName -Like 'R for Windows*' | Sort-Object PSChildName | ForEach-Object { Get-ItemProperty $_.PSPath | Select-Object * -ExcludeProperty PS* } | ConvertTo-Json -Depth 4)
+          if (($before -join '') -ne ($after -join '')) { throw 'R uninstall registry changed.' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: portable-install-log
+          path: .data/install.log

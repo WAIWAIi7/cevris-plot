@@ -27,7 +27,10 @@ try {
     Write-LaunchLog ('Launch requested. Background=' + $SkipBrowser.IsPresent)
 if (!(Test-FigureServer)) {
     if (Test-FigurePort) { throw 'Port 47831 is occupied by a different or unresponsive application. No process was stopped.' }
-    $nodeExe = Join-Path $appRoot '.runtime\node\node.exe'
+    $configPath = Join-Path $appRoot '.runtime/runtime.json'
+    $runtimeConfig = if (Test-Path -LiteralPath $configPath) { Get-Content -LiteralPath $configPath -Raw | ConvertFrom-Json } else { $null }
+    $nodeExe = if ($env:FIGURE_NODE) { $env:FIGURE_NODE } elseif ($runtimeConfig -and $runtimeConfig.node) { $runtimeConfig.node } else { Join-Path $appRoot '.runtime\node\node.exe' }
+    if (![IO.Path]::IsPathRooted($nodeExe)) { $nodeExe = Join-Path $appRoot $nodeExe }
     if (!(Test-Path -LiteralPath $nodeExe)) {
         $command = Get-Command node -ErrorAction SilentlyContinue
         if ($command) { $nodeExe = $command.Source } else { throw 'Run first-install.cmd once before starting the app.' }
@@ -55,8 +58,7 @@ if (!$SkipBrowser) { Start-Process $baseUrl }
 Write-Output $baseUrl
 } catch {
     Write-LaunchLog ('ERROR: ' + $_.Exception.Message)
-    Write-Error $_
-    exit 1
+    throw
 } finally {
     if ($locked) { $mutex.ReleaseMutex() }
     $mutex.Dispose()

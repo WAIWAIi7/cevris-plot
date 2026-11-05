@@ -1,3 +1,13 @@
+# Cevris Plot 0.8.0 — file-only Windows deployment
+
+- Unpack the pinned official R EXE with innoextract; never execute Inno Setup or fall back to registry-writing installation.
+- Reuse external Node/R and explicitly selected R libraries; save app-local configuration for later CLI/web launches.
+- Prefer Node/OpenSSL for archives and CRAN packages; support preloaded Node/R/extractor archives and offline retries. Pin runtime SHA-256 independently of mirror checksum-page availability.
+- Use the supplied frontend; disable npm lifecycle scripts, reuse matching dependencies, and retain a complete frontend if an explicitly requested rebuild fails.
+- Configurable installation directory; optional shortcuts; transcript logs, bounded child processes, staging validation, cache cleanup and serialized repeat installation. No default pause or modal installer.
+- Remove the fixed 2 GB disk-space gate; show an estimate based on missing components. See [installation guide](docs/INSTALLATION.md).
+- Add a local DSH/agent Skill registration helper and a configurable directory for tool-enabled Doubao hosts. Client-specific end-to-end certification remains pending; see [host guide](docs/AGENT_HOSTS.md).
+
 # Cevris Plot 0.7.2 — download recovery
 
 - Retry interrupted transfers, including TLS disconnections, up to three times; then try the Windows download client with normal certificate validation.

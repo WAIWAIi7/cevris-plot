@@ -6,15 +6,15 @@ An R-first scientific figure editor and agent Skill. Choose a chart, import data
 
 ![Cevris Plot home](docs/images/home.png)
 
-Version 0.7.2 is a preview release validated on Windows x64. See [release notes](RELEASE_NOTES.md) for limitations and known dependency advisories.
+Version 0.8.0 is a preview release validated on Windows x64. See [release notes](RELEASE_NOTES.md) for limitations and known dependency advisories.
 
 ## Start locally
 
-**[Download the Windows one-click installer](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.2/install-cevris-plot.cmd)** · [Portable ZIP](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.2/cevris-plot.zip) · [Release](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.7.2)
+**[Download the Windows one-click installer](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.0/install-cevris-plot.cmd)** · [Portable ZIP](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.0/cevris-plot.zip) · [Release](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.8.0)
 
-Double-click the installer to verify and unpack the release, install dependencies, create a current-user Start Menu shortcut and open the editor. It installs under `%LOCALAPPDATA%\CevrisPlot\0.7.2`; afterwards search **Cevris Plot** in Start. First installation requires internet access and 2 GB of free disk space, without administrator privileges. Use the ZIP option below if your system drive is low on space or to choose a different directory.
+Choose any writable folder in the installer, or extract the release ZIP there and run first-install.cmd. Later use start.cmd to open the local editor. R is extracted as files without running its installer or writing registry/Start Menu entries. Node/OpenSSL downloads, preloaded archives, external Node/R, repeat installation and logs are supported. The release frontend is used as-is; lifecycle scripts are disabled for npm dependencies. The fixed 2 GB gate has been replaced with an estimate of missing components. Start Menu shortcuts are optional.
 
-On Windows x64, extract the release ZIP and double-click `first-install.cmd`. It downloads Node.js, R and packages, builds and checks the app, then opens the editor automatically. Later, use `start.cmd` to open <http://127.0.0.1:47831/>. Afterwards manual data import, editing, project saving and export work offline. The local server must be running; a URL alone cannot start it. Other operating systems have not been validated.
+See [installation, offline preparation and disk space](docs/INSTALLATION.md) and [DSH / local Doubao host setup](docs/AGENT_HOSTS.md). First-time dependency setup normally needs internet; manual editing/export work offline afterwards. A tool-enabled local host is required for agent automation, and specific consumer-client integrations are not certified.
 
 The default page is the owner-curated home; open the chart library to browse every template. Select a chart to open its example in the editor, or download its CSV to see the expected data. The import dialog shows required fields and example rows before you choose CSV, TSV, TXT or XLSX. Preview the file, select its encoding or worksheet, then map columns to their meanings. See [data preparation instructions](DATA_FORMATS.md). Adjust appearance, text, axes, canvas and recipe-specific analysis options. The large canvas holds a smaller centered figure; use 25–300% zoom or Fit view. Zoom does not change export dimensions.
 

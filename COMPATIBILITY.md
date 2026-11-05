@@ -14,6 +14,10 @@ Codex and other local tool-enabled agent hosts can read the Skill and invoke the
 
 AI calls use the user's chosen agent account or API configuration. The standalone UI performs no LLM requests and stores no API keys. Local scientific calculations and offline chart recommendations need no tokens.
 
+## Local host installation
+
+Version 0.8.0 adds file-only Windows deployment, external Node/R configuration, preloaded archives, offline retries, and a small host-registration helper. DSH uses its documented user/project Skill directories; a Doubao client must provide its actual local Skill directory and process tools. See [host setup](docs/AGENT_HOSTS.md) and [restricted installation](docs/INSTALLATION.md). These are local integration paths, not a claim of provider certification or permission to bypass a host sandbox.
+
 ## Screenshot-reference coverage
 
 The supplied ChiPlot screenshots inform navigation and parameter organization; their code and images are not bundled. All 105 displayed templates are backed by R implementations. Variants are explicitly counted as templates, not 105 unrelated statistical methods.

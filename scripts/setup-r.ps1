@@ -1,36 +1,42 @@
+param([string]$RInstaller, [string]$ExtractorArchive, [string]$Rscript = $env:FIGURE_RSCRIPT, [switch]$Offline)
 $ErrorActionPreference = 'Stop'
-. (Join-Path $PSScriptRoot 'download.ps1')
+. (Join-Path $PSScriptRoot 'install-common.ps1')
 $appRoot = Split-Path $PSScriptRoot -Parent
 $runtimeRoot = Join-Path $appRoot '.runtime'
-$rHome = Join-Path $runtimeRoot 'R'
-$rscript = Join-Path $rHome 'bin\Rscript.exe'
-New-Item -ItemType Directory -Force -Path $runtimeRoot | Out-Null
-if (!(Test-Path -LiteralPath $rscript)) {
-    $installer = Join-Path $runtimeRoot 'R-4.6.2-win.exe'
-    Write-Output 'Downloading the isolated R runtime from a CRAN mirror...'
-    $downloaded = $false
-    foreach ($mirror in @('https://cloud.r-project.org', 'https://cran.rstudio.com', 'https://cran.r-project.org')) {
-        foreach ($location in @('/bin/windows/base/', '/bin/windows/base/old/4.6.2/')) {
-            try {
-                $base = $mirror + $location
-                $checksums = (Invoke-WebRequest -UseBasicParsing -Uri ($base + 'md5sum.R-4.6.2.txt') -TimeoutSec 25).Content
-                $line = ($checksums -split "\r?\n") | Where-Object { $_ -match '\bR-4\.6\.2-win\.exe\s*$' } | Select-Object -First 1
-                if (!$line) { throw 'R installer checksum entry was not found.' }
-                $expected = ($line.Trim() -split '\s+')[0]
-                Get-OfficialFile -Uri ($base + 'R-4.6.2-win.exe') -Destination $installer
-                if ((Get-FileHash -LiteralPath $installer -Algorithm MD5).Hash.ToLowerInvariant() -ne $expected.ToLowerInvariant()) { throw 'R download checksum mismatch.' }
-                $downloaded = $true
-                break
-            } catch { Write-Warning ('Download attempt failed: ' + $base + ' ' + $_.Exception.Message) }
+$manifest = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'runtime-manifest.json') -Raw | ConvertFrom-Json
+$cache = Join-Path $runtimeRoot 'cache'
+$staging = Join-Path $runtimeRoot 'staging'
+New-Item -ItemType Directory -Force -Path $cache,$staging | Out-Null
+if (!$Rscript) { $Rscript = Join-Path $runtimeRoot 'R/bin/x64/Rscript.exe' }
+$Rscript = Get-DirectR $Rscript
+if (!(Test-Path -LiteralPath $Rscript)) {
+    if ($env:FIGURE_RSCRIPT -or !$Rscript.StartsWith($runtimeRoot, [StringComparison]::OrdinalIgnoreCase)) { throw 'The selected external Rscript does not exist.' }
+    $installer = Get-RuntimeArchive $manifest.r $RInstaller $cache -Offline:$Offline
+    $extractZip = Get-RuntimeArchive $manifest.extractor $ExtractorArchive $cache -Offline:$Offline
+    $stage = Join-Path $staging ('r-' + [guid]::NewGuid().ToString('N').Substring(0,8))
+    New-Item -ItemType Directory -Path $stage | Out-Null
+    try {
+        $toolDir = Join-Path $stage 'extractor'
+        Expand-RuntimeZip $extractZip $toolDir (Get-DownloadNode)
+        Write-Install 'Extracting R files only. The R installer is never executed.'
+        $code = Invoke-InstallTool (Join-Path $toolDir 'innoextract.exe') @('--extract','--silent','--include','app','--output-dir',(Join-Path $stage 'unpacked'),$installer) 180
+        if ($code -ne 0) { throw ('R extraction failed: ' + $code + '. No installer fallback will run.') }
+        $tree = Join-Path $stage 'unpacked/app'
+        $probe = Join-Path $tree 'bin/x64/Rscript.exe'
+        $code = Invoke-InstallTool $probe @('--vanilla','-e','stopifnot(getRversion() >= "4.2.0"); cat(R.version.string, "\n")') 30
+        if ($code -ne 0) { throw 'Extracted R failed validation.' }
+        $rHome = Join-Path $runtimeRoot 'R'
+        if (Test-Path -LiteralPath $rHome) {
+            $old = Join-Path $runtimeRoot ('R.incomplete-' + [guid]::NewGuid().ToString('N'))
+            Move-Item -LiteralPath $rHome -Destination $old
+            Write-Warning ('Incomplete previous R directory preserved: ' + $old)
         }
-        if ($downloaded) { break }
-    }
-    if (!$downloaded) { throw 'Could not download and verify R 4.6.2. Check the network and rerun first-install.cmd.' }
-    $process = Start-Process -FilePath $installer -WindowStyle Hidden -PassThru -Wait -ArgumentList @(
-        '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', '/CURRENTUSER',
-        ('/DIR="' + $rHome + '"'), '/COMPONENTS=main,x64', '/MERGETASKS=!desktopicon,!quicklaunchicon,!recordversion,!associate'
-    )
-    if ($process.ExitCode -ne 0) { throw "R setup failed: $($process.ExitCode)" }
+        Move-Item -LiteralPath $tree -Destination $rHome
+        $Rscript = Join-Path $rHome 'bin/x64/Rscript.exe'
+    } finally { Remove-OwnedDirectory $stage $staging }
 }
-& $rscript --vanilla (Join-Path $PSScriptRoot 'setup-r.R')
-if ($LASTEXITCODE -ne 0) { throw 'R package setup failed.' }
+Write-Install ('Using R: ' + $Rscript)
+$env:FIGURE_RSCRIPT = $Rscript
+$env:CEVRIS_OFFLINE = if ($Offline) { '1' } else { '0' }
+$code = Invoke-InstallTool $Rscript @('--vanilla',(Join-Path $PSScriptRoot 'setup-r.R')) 1200
+if ($code -ne 0) { throw ('R package setup failed: ' + $code + '. Existing R files have been retained.') }
