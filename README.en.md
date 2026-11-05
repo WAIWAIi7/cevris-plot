@@ -6,11 +6,11 @@ An R-first scientific figure editor and agent Skill. Choose a chart, import data
 
 ![Cevris Plot home](docs/images/home.png)
 
-Version 0.8.0 is a preview release validated on Windows x64. See [release notes](RELEASE_NOTES.md) for limitations and known dependency advisories.
+Version 0.8.1 is a preview release validated on Windows x64. See [release notes](RELEASE_NOTES.md) for limitations and known dependency advisories.
 
 ## Start locally
 
-**[Download the Windows one-click installer](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.0/install-cevris-plot.cmd)** · [Portable ZIP](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.0/cevris-plot.zip) · [Release](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.8.0)
+**[Download the Windows one-click installer](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.1/install-cevris-plot.cmd)** · [Portable ZIP](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.1/cevris-plot.zip) · [Release](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.8.1)
 
 Choose any writable folder in the installer, or extract the release ZIP there and run first-install.cmd. Later use start.cmd to open the local editor. R is extracted as files without running its installer or writing registry/Start Menu entries. Node/OpenSSL downloads, preloaded archives, external Node/R, repeat installation and logs are supported. The release frontend is used as-is; lifecycle scripts are disabled for npm dependencies. The fixed 2 GB gate has been replaced with an estimate of missing components. Start Menu shortcuts are optional.
 

@@ -57,6 +57,13 @@ function Get-RuntimeArchive($Entry, [string]$Provided, [string]$Cache, [switch]$
     }
     throw ('Unable to download verified ' + $Entry.file + '; preloaded files are supported. See installation log.')
 }
+function Test-InstallNode([string]$Path) {
+    if (!$Path -or !(Test-Path -LiteralPath $Path)) { return $false }
+    $npm = Join-Path (Split-Path $Path -Parent) 'node_modules/npm/bin/npm-cli.js'
+    if (!(Test-Path -LiteralPath $npm)) { return $false }
+    try { return (Invoke-InstallTool $Path @('-e', 'process.exit(process.versions.node.split(".")[0] === "24" ? 0 : 1)') 20) -eq 0 }
+    catch { return $false }
+}
 function Get-DirectR([string]$Path) {
     $full = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Path)
     $direct = Join-Path (Split-Path $full -Parent) 'x64/Rscript.exe'

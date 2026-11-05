@@ -45,7 +45,8 @@ try {
     if ($candidate -and ![IO.Path]::IsPathRooted($candidate)) { $candidate = Join-Path $appRoot $candidate }
     $privateNode = Join-Path $runtimeRoot 'node/node.exe'
     if ($candidate -and (!$NodeArchive -or [IO.Path]::GetFullPath($candidate) -eq [IO.Path]::GetFullPath($privateNode))) {
-        try { $version = & $candidate -p 'process.versions.node'; if ($LASTEXITCODE -eq 0 -and $version -match '^24\.') { $nodeExe = [IO.Path]::GetFullPath($candidate) } } catch { Write-Warning 'Existing Node cannot run; trying the private runtime.' }
+        if (Test-InstallNode $candidate) { $nodeExe = [IO.Path]::GetFullPath($candidate) }
+        else { Write-Install 'Existing Node is incomplete or incompatible; selecting a private Node with npm. It remains available for downloading.' }
     }
     # Estimate only missing components. An estimate is guidance, never a blanket 2 GB gate.
     $estimate = 100MB
@@ -134,6 +135,9 @@ try {
     $verify = if ($VerifyAll) { 'verify-r.mjs' } else { 'verify-install.mjs' }
     if ((Invoke-InstallTool $nodeExe @((Join-Path $PSScriptRoot $verify)) 900) -ne 0) { throw 'R rendering verification failed; files retained for repair.' }
     if (!$KeepDownloads) { Remove-OwnedDirectory $cache $runtimeRoot; Remove-OwnedDirectory $tempRoot $runtimeRoot }
+    # The first launched service inherits TEMP/TMP; retain a writable directory
+    # after deleting installation debris instead of passing a removed path to R.
+    New-Item -ItemType Directory -Force -Path $tempRoot | Out-Null
     Write-Install 'Cevris Plot installation complete. No registry or Start Menu changes were required.'
     if ($CreateShortcut) {
         try { & (Join-Path $PSScriptRoot 'shortcut.ps1') }

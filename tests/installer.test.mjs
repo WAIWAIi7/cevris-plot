@@ -71,3 +71,14 @@ test('Windows process runner fails promptly on a hung child', {skip:!windows}, a
   const script = `$ErrorActionPreference='Stop'; . ${psQuote(common)}; Invoke-InstallTool ${psQuote(process.execPath)} @('-e','setInterval(()=>{},1000)') 1`;
   await assert.rejects(promisify(execFile)(powershell,['-NoProfile','-ExecutionPolicy','Bypass','-Command',script],{windowsHide:true,timeout:12000}), error => /timed out/.test(error.stderr));
 });
+
+test('an agent-bundled Node without npm is not selected as a complete installation runtime', {skip:!windows}, async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'cevris-bare-node-'));
+  try {
+    const bare = path.join(root, 'node.exe');
+    await fs.copyFile(process.execPath, bare);
+    const script = `. ${psQuote(common)}; if (Test-InstallNode ${psQuote(bare)}) { throw 'Bare Node was accepted despite missing npm.' }; Write-Output 'fallback-required'`;
+    const {stdout} = await promisify(execFile)(powershell,['-NoProfile','-ExecutionPolicy','Bypass','-Command',script],{windowsHide:true,timeout:30000});
+    assert.match(stdout, /fallback-required/);
+  } finally { await fs.rm(root, {recursive:true,force:true}); }
+});

@@ -8,19 +8,19 @@
 
 ![Cevris Plot 推荐主页](docs/images/home.png)
 
-当前为 0.8.0 预览版，已验证平台为 Windows x64。已知限制和依赖告警见 [发布说明](RELEASE_NOTES.md)。
+当前为 0.8.1 预览版，已验证平台为 Windows x64。已知限制和依赖告警见 [发布说明](RELEASE_NOTES.md)。
 
-[查看 0.8.0 安装修复验收](docs/RELEASE_CHECKS_080.md)
+[查看 0.8.1 安装修复验收](docs/RELEASE_CHECKS_080.md)
 
 配色用法、完整名单和边界见 [PALETTES.md](PALETTES.md)。
 
 ## 运行
 
-**[Windows 一键安装器](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.0/install-cevris-plot.cmd)** · [发布 ZIP](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.0/cevris-plot.zip) · [发布页](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.8.0)
+**[Windows 一键安装器](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.1/install-cevris-plot.cmd)** · [发布 ZIP](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.8.1/cevris-plot.zip) · [发布页](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.8.1)
 
 双击安装器可选择任意可写目录；或下载 ZIP，解压到目标磁盘，双击“首次安装.cmd”。发布包自带编译网页。安装后双击“启动科研绘图.cmd”或 start.cmd，即可打开本地网页。首次准备依赖需要联网，之后手动绘图、编辑和导出可以离线使用。
 
-**0.8.0 改为文件部署**：官方 R 安装文件只解包、不执行，不依赖注册表或开始菜单权限；优先使用 Node/OpenSSL 下载，支持预置文件、已有 Node/R、安装日志和失败后重试。固定 2 GB 门槛已取消，改为根据缺少组件提示空间预算。开始菜单入口是可选项，默认无需创建。
+**0.8.1 改为文件部署**：官方 R 安装文件只解包、不执行，不依赖注册表或开始菜单权限；优先使用 Node/OpenSSL 下载，支持预置文件、已有 Node/R、安装日志和失败后重试。固定 2 GB 门槛已取消，改为根据缺少组件提示空间预算。开始菜单入口是可选项，默认无需创建。
 
 受限环境、无窗口安装、离线准备、指定目录和磁盘占用说明见 [安装与修复指南](docs/INSTALLATION.md)。DSH 注册与豆包本地宿主接入见 [智能体宿主指南](docs/AGENT_HOSTS.md)。具体客户端需要具备本地文件和进程工具；不声称普通聊天网页可以直接安装本机软件。
 
@@ -80,7 +80,7 @@ SVG 采用可编辑文本，查看电脑需有相应字体；PDF 由 Cairo 生�
 
 ## 后续范围
 
-当前版本为 0.8.0，尚未实现数百图形、任意位置自由拖拽拼版、网页内模型对话、完整统计分析流水线或跨平台安装。后续按“配方 + 输入契约 + 示例 + 专用控件 + 导出验证”扩展。优先扩展 R 包；仅在 R 方案不能满足需求时增加其他引擎。
+当前版本为 0.8.1，尚未实现数百图形、任意位置自由拖拽拼版、网页内模型对话、完整统计分析流水线或跨平台安装。后续按“配方 + 输入契约 + 示例 + 专用控件 + 导出验证”扩展。优先扩展 R 包；仅在 R 方案不能满足需求时增加其他引擎。
 
 ## GitHub 源码发布
 

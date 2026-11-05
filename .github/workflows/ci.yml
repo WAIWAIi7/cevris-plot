@@ -70,6 +70,12 @@ jobs:
           $before = @(Get-ChildItem 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall' -ErrorAction SilentlyContinue | Where-Object PSChildName -Like 'R for Windows*' | Sort-Object PSChildName | ForEach-Object { Get-ItemProperty $_.PSPath | Select-Object * -ExcludeProperty PS* } | ConvertTo-Json -Depth 4)
           & ./scripts/install.ps1
           & ./scripts/install.ps1 -Offline
+          $env:TEMP = Join-Path $PWD '.runtime/tmp'
+          $env:TMP = $env:TEMP
+          $probe = Join-Path $env:TEMP 'first-launch-probe.R'
+          'stopifnot(dir.exists(Sys.getenv("TEMP")), file.access(Sys.getenv("TEMP"), 2L) == 0L); stopifnot(startsWith(normalizePath(tempdir(), winslash="/"), normalizePath(Sys.getenv("TEMP"), winslash="/")))' | Set-Content -LiteralPath $probe
+          & ./.runtime/R/bin/x64/Rscript.exe --vanilla $probe
+          if ($LASTEXITCODE -ne 0) { throw 'First-launch R temporary directory is not usable.' }
           $after = @(Get-ChildItem 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall' -ErrorAction SilentlyContinue | Where-Object PSChildName -Like 'R for Windows*' | Sort-Object PSChildName | ForEach-Object { Get-ItemProperty $_.PSPath | Select-Object * -ExcludeProperty PS* } | ConvertTo-Json -Depth 4)
           if (($before -join '') -ne ($after -join '')) { throw 'R uninstall registry changed.' }
       - uses: actions/upload-artifact@v4

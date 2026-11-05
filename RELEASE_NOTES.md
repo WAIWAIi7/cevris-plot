@@ -1,3 +1,9 @@
+# Cevris Plot 0.8.1 — first-launch fixes
+
+- When an agent supplies a standalone Node executable without npm, retain it for HTTPS downloads and install a complete app-local Node runtime automatically.
+- Retain an empty, writable temporary directory after installation cleanup, so the first automatically launched R process does not inherit a deleted TEMP/TMP path.
+- Includes all file-only deployment improvements from 0.8.0 below; published 0.8.0 assets remain unchanged.
+
 # Cevris Plot 0.8.0 — file-only Windows deployment
 
 - Unpack the pinned official R EXE with innoextract; never execute Inno Setup or fall back to registry-writing installation.
