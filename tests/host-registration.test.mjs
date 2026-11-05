@@ -59,6 +59,7 @@ test('DSH double-click registration reuses a saved external Node without PATH or
     for(const key of Object.keys(env))if(key.toLowerCase()==='path' && key!=='PATH')delete env[key];
     await promisify(execFile)(powershell,['-NoProfile','-ExecutionPolicy','Bypass','-File',path.join(root,'scripts/register-dsh.ps1')],{env,windowsHide:true,timeout:30000});
     const marker=JSON.parse(await fs.readFile(path.join(env.DSH_HOME,'skills/cevris-plot/.cevris-link.json'),'utf8'));
-    assert.equal(marker.node,process.execPath);assert.equal(marker.app,root);
+    assert.equal(marker.node,process.execPath);
+    assert.equal(await fs.realpath(marker.app),await fs.realpath(root));
   } finally {await fs.rm(root,{recursive:true,force:true});}
 });
