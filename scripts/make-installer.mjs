@@ -16,8 +16,9 @@ setlocal
 set "CEVRIS_INSTALLER=%~f0"
 set "CEVRIS_INSTALL_DIR=%~1"
 powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$text=[IO.File]::ReadAllText($env:CEVRIS_INSTALLER); & ([scriptblock]::Create($text.Substring($text.LastIndexOf('# CEVRIS-POWERSHELL'))))"
-if errorlevel 1 pause
-exit /b
+set "CEVRIS_EXIT_CODE=%ERRORLEVEL%"
+if not "%CEVRIS_EXIT_CODE%"=="0" pause
+exit /b %CEVRIS_EXIT_CODE%
 # CEVRIS-POWERSHELL
 $ErrorActionPreference = 'Stop'
 if (![Environment]::Is64BitOperatingSystem) { throw 'Cevris Plot requires Windows x64.' }
