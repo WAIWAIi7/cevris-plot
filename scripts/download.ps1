@@ -2,9 +2,15 @@
 function Get-OfficialFile([string]$Uri, [string]$Destination) {
     $curlCommand = Get-Command curl.exe -ErrorAction SilentlyContinue
     if ($curlCommand) {
-        & $curlCommand.Source --fail --location --silent --show-error --retry 2 --connect-timeout 20 --max-time 600 --output $Destination $Uri
-        if ($LASTEXITCODE -ne 0) { throw "Runtime download failed ($LASTEXITCODE): $Uri" }
-        return
+        # Retry all nonzero exits, including TLS disconnects that curl --retry
+        # does not retry by default. Each attempt replaces any partial download.
+        for ($downloadAttempt = 1; $downloadAttempt -le 3; $downloadAttempt++) {
+            & $curlCommand.Source --fail --location --silent --show-error --connect-timeout 20 --max-time 600 --output $Destination $Uri
+            if ($LASTEXITCODE -eq 0) { return }
+            Write-Warning ('Download interrupted; attempt ' + $downloadAttempt + ' of 3 failed.')
+            if ($downloadAttempt -lt 3) { Start-Sleep -Seconds 2 }
+        }
+        Write-Warning 'Retrying with the Windows download client.'
     }
     $previousProgress = $ProgressPreference
     try {

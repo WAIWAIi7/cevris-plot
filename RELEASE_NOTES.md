@@ -1,3 +1,10 @@
+# Cevris Plot 0.7.2 — download recovery
+
+- Retry interrupted transfers, including TLS disconnections, up to three times; then try the Windows download client with normal certificate validation.
+- Every runtime and release archive remains checksum-verified before installation. Failed downloads return a nonzero exit status and can be retried.
+- Windows installation and launcher wrappers preserve failures instead of reporting success after a pause.
+- The installer checks for 2 GB of free space and supports an alternate destination.
+
 # Cevris Plot 0.7.1 — preview
 
 - Unified the project, Skill and archive name as Cevris Plot / `cevris-plot`; preserved existing project schemas and browser drafts.

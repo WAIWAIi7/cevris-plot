@@ -8,7 +8,7 @@
 
 ![Cevris Plot 推荐主页](docs/images/home.png)
 
-当前为 0.7.1 预览版，已验证平台为 Windows x64。已知限制和依赖告警见 [发布说明](RELEASE_NOTES.md)。
+当前为 0.7.2 预览版，已验证平台为 Windows x64。已知限制和依赖告警见 [发布说明](RELEASE_NOTES.md)。
 
 [查看发布前检查结果](docs/RELEASE_CHECKS.md)
 
@@ -16,9 +16,9 @@
 
 ## 运行
 
-**[下载 Windows 一键安装器](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.1/install-cevris-plot.cmd)** · [下载便携安装包](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.1/cevris-plot.zip) · [发布页](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.7.1)
+**[下载 Windows 一键安装器](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.2/install-cevris-plot.cmd)** · [下载便携安装包](https://github.com/WAIWAIi7/cevris-plot/releases/download/v0.7.2/cevris-plot.zip) · [发布页](https://github.com/WAIWAIi7/cevris-plot/releases/tag/v0.7.2)
 
-一键安装器下载后双击即可：校验发布包、自动安装运行环境、创建当前用户的开始菜单入口并打开网页。默认安装到 `%LOCALAPPDATA%\CevrisPlot\0.7.1`，以后可在开始菜单搜索 **Cevris Plot**。首次安装需要联网，并预留 2 GB 磁盘空间；不需要管理员权限。若系统盘空间不足或希望自行指定目录，使用下面的 ZIP 方式。
+一键安装器下载后双击即可：校验发布包、自动安装运行环境、创建当前用户的开始菜单入口并打开网页。默认安装到 `%LOCALAPPDATA%\CevrisPlot\0.7.2`，以后可在开始菜单搜索 **Cevris Plot**。首次安装需要联网，并预留 2 GB 磁盘空间；不需要管理员权限。若系统盘空间不足或希望自行指定目录，使用下面的 ZIP 方式。
 
 Windows x64：下载发布包并解压，双击“首次安装.cmd”，自动下载和安装 Node.js、R 与依赖，构建、检查图形并打开网页。以后双击“启动科研绘图.cmd”即可访问 http://127.0.0.1:47831。无需编写代码，也无需模型 Token。
 
@@ -84,7 +84,7 @@ SVG 采用可编辑文本，查看电脑需有相应字体；PDF 由 Cairo 生�
 
 ## 后续范围
 
-当前版本为 0.7.1，尚未实现数百图形、任意位置自由拖拽拼版、网页内模型对话、完整统计分析流水线或跨平台安装。后续按“配方 + 输入契约 + 示例 + 专用控件 + 导出验证”扩展。优先扩展 R 包；仅在 R 方案不能满足需求时增加其他引擎。
+当前版本为 0.7.2，尚未实现数百图形、任意位置自由拖拽拼版、网页内模型对话、完整统计分析流水线或跨平台安装。后续按“配方 + 输入契约 + 示例 + 专用控件 + 导出验证”扩展。优先扩展 R 包；仅在 R 方案不能满足需求时增加其他引擎。
 
 ## GitHub 源码发布
 
